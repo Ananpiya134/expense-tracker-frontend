@@ -1,5 +1,5 @@
-import {useState} from 'react'
-
+import {useState, useEffect} from 'react'
+import axios from 'axios'
 function TransactionForm(){
 
     const [input,setInput] = useState({
@@ -10,10 +10,40 @@ function TransactionForm(){
         date:'',
         comment:''
     })
+    const [expenses,setExpenses] = useState([])
+    const [incomes,setIncomes] = useState([])
+
+    useEffect(()=> {
+        axios.get('http://localhost:8080/categories')
+        .then(res => {
+            const newExpenses = res.data.categories.filter(item => 
+                item.type === 'EXPENSE')
+            setExpenses(newExpenses)
+            setIncomes(res.data.categories.filter(item => item.type === 'INCOME'))
+            setInput(prev => ({...prev, category: newExpenses[0].id}))
+        })
+    },[])
+
+    const option = 
+        input.type === 'EXPENSE' 
+        ? expenses.map(item => (
+            <option key={item.id} value={item.id}> 
+                {item.name} 
+            </option>
+        ))
+        : incomes.map(item => (
+            <option key={item.id} value={item.id}> 
+                {item.name}
+            </option>
+        ))
+        
 
     const handleChangeInput = e => {
         setInput(prev => ({...prev, [e.target.name]:e.target.value}))
-    }
+        if(e.target.name === 'type'){
+            setInput(prev => ({...prev, category: e.target.value === 'EXPENSE' ? expenses[0]:incomes[0] }))
+        }
+     }
 
 
     return(
@@ -56,24 +86,44 @@ function TransactionForm(){
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Category</label>
-                <select className="form-select" >
-                <option>Food</option>
-                <option>Shopping</option>
-                <option>Transport</option>
-                <option>Utilities</option>
+                <select 
+                className="form-select" 
+                name="category"
+                value={input.category}
+                onChange={handleChangeInput}
+                >
+                {option}
                 </select>
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Amount</label>
-                <input type="text" className="form-control" onChange={handleChangeInput} />
+                <input 
+                type="text" 
+                className="form-control" 
+                onChange={handleChangeInput} 
+                name="amount" 
+                value={input.amount} 
+                />
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Date</label>
-                <input type="date" className="form-control" onChange={handleChangeInput}/>
+                <input 
+                type="date" 
+                className="form-control" 
+                onChange={handleChangeInput}
+                name="date"
+                value={input.date}
+                />
             </div>
             <div className="col-12">
                 <label className="form-label">Comment</label>
-                <textarea className="form-control" onChange={handleChangeInput} rows="3"></textarea>
+                <textarea 
+                className="form-control" 
+                onChange={handleChangeInput} 
+                rows="3"
+                name='comment'
+                value={input.comment}
+                ></textarea>
             </div>
             <div className="col-12">
                 <div className="d-grid mt-3">

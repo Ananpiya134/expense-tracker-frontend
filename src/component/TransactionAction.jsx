@@ -11,8 +11,7 @@ function TransactionAction(){
             <div className="d-grid mt-3">
                 <button 
                 className="btn btn-outline-warning"
-                onClick={() => setIsShowForm(prev => !prev)}
-                >
+                onClick={() => setIsShowForm(prev => !prev)}>
                     {isShowForm === false ? 'Create Transaction':'Cancel'}
                 </button>
             </div>

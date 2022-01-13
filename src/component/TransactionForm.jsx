@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
+import validator from 'validator'
 function TransactionForm(){
 
     const [input,setInput] = useState({
@@ -10,6 +11,7 @@ function TransactionForm(){
         date:'',
         comment:''
     })
+    const [error,setError] = useState({})
     const [expenses,setExpenses] = useState([])
     const [incomes,setIncomes] = useState([])
 
@@ -35,8 +37,29 @@ function TransactionForm(){
             <option key={item.id} value={item.id}> 
                 {item.name}
             </option>
-        ))
-        
+        ));
+    
+    const handleSubmitForm = e => {
+        e.preventDefault();
+        if(validator.isEmpty(input.payee)){
+            setError(prev => ({...prev, payee: 'payee is required'}))
+        }else{
+            setError(prev => ({...prev, payee: ''}))
+        }
+
+        if(validator.isEmpty(input.amount)){
+            setError(prev => ({...prev, amount: 'amount is required'}))
+        }else{
+            setError(prev => ({...prev, amount:''}))
+        }
+
+        if(validator.isEmpty(input.date)){
+            setError(prev => ({...prev, date: 'date is required'}))
+        }else{
+            setError(prev => ({...prev, date:''}))
+        }
+
+    }
 
     const handleChangeInput = e => {
         setInput(prev => ({...prev, [e.target.name]:e.target.value}))
@@ -48,7 +71,10 @@ function TransactionForm(){
 
     return(
         <div className="border bg-white rounded-2 p-3 mt-3">
-            <form className="row g-3">
+            <form 
+            className="row g-3"
+            onSubmit={handleSubmitForm}
+            >
             <div className="col-12">
                 <input
                 type="radio"
@@ -82,7 +108,14 @@ function TransactionForm(){
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Payee</label>
-                <input type="text" className="form-control" value={input.payee} name="payee" onChange={handleChangeInput}/>
+                <input 
+                type="text" 
+                className={`form-control ${error.payee ? 'is-invalid': ''}`} 
+                value={input.payee} 
+                name="payee" 
+                onChange={handleChangeInput}
+                />
+                <div className='invalid-feedback'>{error.payee}</div>
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Category</label>
@@ -99,21 +132,23 @@ function TransactionForm(){
                 <label className="form-label">Amount</label>
                 <input 
                 type="text" 
-                className="form-control" 
+                className={`form-control ${error.amount ? 'is-invalid': ''}`} 
                 onChange={handleChangeInput} 
                 name="amount" 
                 value={input.amount} 
                 />
+                <div className='invalid-feedback'>{error.amount}</div>
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Date</label>
                 <input 
                 type="date" 
-                className="form-control" 
+                className={`form-control ${error.date ? 'is-invalid': ''}`} 
                 onChange={handleChangeInput}
                 name="date"
                 value={input.date}
                 />
+                <div className='invalid-feedback'>{error.date}</div>
             </div>
             <div className="col-12">
                 <label className="form-label">Comment</label>
@@ -127,7 +162,8 @@ function TransactionForm(){
             </div>
             <div className="col-12">
                 <div className="d-grid mt-3">
-                <button className="btn btn-primary">Save</button>
+                <button 
+                className="btn btn-primary">Save</button>
                 </div>
             </div>
             </form>

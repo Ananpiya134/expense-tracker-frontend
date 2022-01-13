@@ -1,14 +1,20 @@
 import TransactionCard from './TransactionCard'
 
 
-function TransactionList(){
-
+function TransactionList(props){
+    const {transactions} = props
     
     return (
         <ul className="list-group">
+            {transactions.map(item => {
+                return <TransactionCard 
+                key={item.id}
+                item={item} />
+            })}
+            
+            {/* <TransactionCard />
             <TransactionCard />
-            <TransactionCard />
-            <TransactionCard />
+            <TransactionCard /> */}
       </ul>
     )
 }

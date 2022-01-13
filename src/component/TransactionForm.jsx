@@ -1,4 +1,21 @@
+import {useState} from 'react'
+
 function TransactionForm(){
+
+    const [input,setInput] = useState({
+        type:'EXPENSE',
+        payee:'',
+        category:'',
+        amount:'',
+        date:'',
+        comment:''
+    })
+
+    const handleChangeInput = e => {
+        setInput(prev => ({...prev, [e.target.name]:e.target.value}))
+    }
+
+
     return(
         <div className="border bg-white rounded-2 p-3 mt-3">
             <form className="row g-3">
@@ -9,6 +26,8 @@ function TransactionForm(){
                 id="cbx-expense"
                 name="type"
                 defaultChecked
+                value="EXPENSE"
+                onChange={handleChangeInput}
                 />
                 <label
                 className="btn btn-outline-danger rounded-0 rounded-start"
@@ -21,6 +40,8 @@ function TransactionForm(){
                 className="btn-check"
                 id="cbx-income"
                 name="type"
+                value="INCOME"
+                onChange={handleChangeInput}
                 />
                 <label
                 className="btn btn-outline-success rounded-0 rounded-end"
@@ -31,11 +52,11 @@ function TransactionForm(){
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Payee</label>
-                <input type="text" className="form-control" />
+                <input type="text" className="form-control" value={input.payee} name="payee" onChange={handleChangeInput}/>
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Category</label>
-                <select className="form-select">
+                <select className="form-select" >
                 <option>Food</option>
                 <option>Shopping</option>
                 <option>Transport</option>
@@ -44,15 +65,15 @@ function TransactionForm(){
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Amount</label>
-                <input type="text" className="form-control" />
+                <input type="text" className="form-control" onChange={handleChangeInput} />
             </div>
             <div className="col-sm-6">
                 <label className="form-label">Date</label>
-                <input type="date" className="form-control" />
+                <input type="date" className="form-control" onChange={handleChangeInput}/>
             </div>
             <div className="col-12">
                 <label className="form-label">Comment</label>
-                <textarea className="form-control" rows="3"></textarea>
+                <textarea className="form-control" onChange={handleChangeInput} rows="3"></textarea>
             </div>
             <div className="col-12">
                 <div className="d-grid mt-3">

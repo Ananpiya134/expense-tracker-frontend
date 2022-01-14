@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
 import validator from 'validator'
-function TransactionForm(){
+function TransactionForm({addTransaction, closeForm}){
 
     const [input,setInput] = useState({
         type:'EXPENSE',
@@ -59,6 +59,13 @@ function TransactionForm(){
             setError(prev => ({...prev, date:''}))
         }
 
+        addTransaction({categoryId: input.category,
+            payee:input.payee, 
+            amount: +input.amount,
+            date: input.date, 
+            comment: input.comment
+        })
+        closeForm()
     }
 
     const handleChangeInput = e => {

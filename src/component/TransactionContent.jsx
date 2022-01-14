@@ -1,14 +1,22 @@
 import Report from './Report'
 import FilterBar from './FilterBar'
 import Pagination from './Pagination'
+import TransactionList from './TransactionList'
 
 
-function TransactionContent(){
+function TransactionContent({transactions,deleteTransaction}){
+
     return (
         <>
-            <Report/>
+            <Report
+            transactions={transactions}
+            />
             <FilterBar/>
             <Pagination/>
+            <TransactionList
+            transactions={transactions}
+            deleteTransaction={deleteTransaction}
+            />
         </>
     )
 }

@@ -5,13 +5,17 @@ import {formatThaiCurrency} from '../services/currencyService'
 
 function TransactionCard(props){
     const {
-        item:{amount, 
+        deleteTransaction,
+        item :{
+            amount, 
             category: {name, type}, 
             payee, 
             id, 
             comment, 
-            date}
+            date
+        }   
     } = props
+    
     
     return (
         <>
@@ -29,7 +33,10 @@ function TransactionCard(props){
                         <span className={`badge bg-${type === 'EXPENSE' ? 'danger':'success'}`}>{formatThaiCurrency(amount)}</span>
                     </div>
                 </div>
-                <button className="btn btn-link text-secondary p-0 border-0">
+                <button 
+                className="btn btn-link text-secondary p-0 border-0"
+                onClick={() => deleteTransaction(id) }
+                >
                     <i className="bi-x-circle" />
                 </button>
             </li>

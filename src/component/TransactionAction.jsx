@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import TransactionForm from './TransactionForm'
 
-function TransactionAction(){
+function TransactionAction({addTransaction}){
 
     const [isShowForm,setIsShowForm] = useState(false)
+    const closeForm = () => {
+        setIsShowForm(false)
+    }
 
 
     return (
@@ -15,7 +18,10 @@ function TransactionAction(){
                     {isShowForm === false ? 'Create Transaction':'Cancel'}
                 </button>
             </div>
-            { isShowForm && <TransactionForm />
+            { isShowForm && <TransactionForm
+            addTransaction={addTransaction}
+            closeForm={closeForm}
+            />
             }
 
         </>

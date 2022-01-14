@@ -1,26 +1,22 @@
 import { useState } from 'react'
 import TransactionForm from './TransactionForm'
 
-function TransactionAction({addTransaction}){
-
-    const [isShowForm,setIsShowForm] = useState(false)
-    const closeForm = () => {
-        setIsShowForm(false)
-    }
-
+function TransactionAction({addTransaction,editingTransaction,setIsShowForm,isShowForm,toggleForm,updateTransaction}){
 
     return (
         <>
             <div className="d-grid mt-3">
                 <button 
                 className="btn btn-outline-warning"
-                onClick={() => setIsShowForm(prev => !prev)}>
+                onClick={toggleForm}
+                >
                     {isShowForm === false ? 'Create Transaction':'Cancel'}
                 </button>
             </div>
             { isShowForm && <TransactionForm
             addTransaction={addTransaction}
-            closeForm={closeForm}
+            editingTransaction={editingTransaction}
+            updateTransaction={updateTransaction}
             />
             }
 

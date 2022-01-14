@@ -5,6 +5,7 @@ import {formatThaiCurrency} from '../services/currencyService'
 
 function TransactionCard(props){
     const {
+        selectTransaction,
         deleteTransaction,
         item :{
             amount, 
@@ -19,8 +20,15 @@ function TransactionCard(props){
     
     return (
         <>
-            <li className={`list-group-item d-flex justify-content-between align-items-center bd-callout bd-callout-${type === 'EXPENSE' ? 'danger':'success'}`}>
-                <div className="transaction-detail d-flex flex-fill me-4">
+            <li 
+             className={`list-group-item d-flex justify-content-between align-items-center bd-callout bd-callout-${
+                 type === 'EXPENSE' ? 'danger':'success'
+                 }`}
+            >
+                <div 
+                className="transaction-detail d-flex flex-fill me-4"
+                onClick={() => selectTransaction(props.item)}
+                >
                     <div className="transaction-date-card border border-1 border-dark rounded-2 bg-warning p-2 text-center">
                         <p className="p-0 m-0 fs-7 text-black-50">{`${formatShortMonthShortYear(new Date(date))}`}</p>
                         <p className="p-0 m-0">{new Date(date).getDate()}</p>
